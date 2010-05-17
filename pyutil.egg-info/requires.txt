@@ -1,0 +1,3 @@
+argparse >= 0.8
+zbase32 >= 1.0
+simplejson >= 2.1.0
