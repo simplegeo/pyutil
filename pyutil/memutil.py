@@ -1,4 +1,6 @@
-#  Copyright (c) 2002-2010 Zooko Wilcox-O'Hearn
+#  Copyright (c) 2002 Autonomous Zone Industries
+#  Copyright (c) 2002-2009 Zooko "Zooko" Wilcox-O'Hearn
+#  Copyright (c) 2005-2006 Allmydata, Inc.
 #  This file is part of pyutil; see README.txt for licensing terms.
 
 # from the Python Standard Library
@@ -43,60 +45,6 @@ def estimate_mem_of_obj(o):
 
     # Uh-oh...  I wonder what we are missing here...
     return PY_STRUCT_HEAD_LEN
-
-def check_for_obj_leakage(f, *args, **kwargs):
-    """
-    The idea is that I am going to invoke f(), then run gc.collect(), then run
-    gc.get_objects() to get a complete list of all objects in the system, then
-    invoke f() a second time, then run gc.collect(), then run gc.get_objects()
-    to get a list of all the objects *now* in the system.
-
-    Then I return a tuple two things: the first element of the tuple is the
-    difference between the number of objects in the second list and the number
-    of objects in the first list.
-
-    I.e., if this number is zero then you can be pretty sure there is no memory
-    leak, unless f is deleting some objects and replacing them by exactly the
-    same number of objects but the new objects take up more memory. If this
-    number is greater than zero then you can pretty sure there is a memory
-    leak, unless f is doing some memoization/caching behavior and it will
-    eventually stabilize, which you can detect by running
-    check_for_obj_leakage() more times and seeing if it stabilizes.
-
-    (Actually we run f() followed by gc.collect() one time before we start in
-    order to account for any static objects which are created the first time
-    you run f() and then re-used after that.)
-
-    The second element in the return value is the set of all objects which were
-    present in the second list and not in the first. Some of these objects
-    might be memory-leaked objects, or perhaps f deleted some objects and
-    replaced them with equivalent objects, in which case these objects are not
-    leaked.
-
-    (We actually invoke gc.collect() three times in a row in case there are
-    objects which get collected in the first pass that have finalizers which
-    create new reference-cycled objects... "3" is a superstitious number -- we
-    figure most of the time the finalizers of the things produced by the first
-    round of finalizers won't themselves product another round of
-    reference-cycled objects.)
-    """
-    f()
-    gc.collect();gc.collect();gc.collect()
-    f()
-    gc.collect();gc.collect();gc.collect()
-    r1 = gc.get_objects()
-    f()
-    gc.collect();gc.collect();gc.collect()
-    r2 = gc.get_objects()
-    d2 = dict([(id(x), x) for x in r2])
-
-    # Now remove everything from r1, and r1 itself, from d2.
-    del d2[id(r1)]
-    for o in r1:
-        if id(o) in d2:
-            del d2[id(o)]
-
-    return (len(r2) - len(r1) - 1, d2)
 
 def measure_obj_leakage(f, numsamples=2**7, iterspersample=2**4, *args, **kwargs):
     """

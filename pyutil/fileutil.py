@@ -270,7 +270,7 @@ def make_dirs(dirname, mode=0777):
             raise tx
         raise exceptions.IOError, "unknown error prevented creation of directory, or deleted the directory immediately after creation: %s" % dirname # careful not to construct an IOError with a 2-tuple, as that has a special meaning...
 
-def rm_dir(dirname):
+def rmtree(dirname):
     """
     A threadsafe and idempotent version of shutil.rmtree().  If the dir is
     already gone, do nothing and return without raising an exception.  If this
@@ -306,6 +306,9 @@ def rm_dir(dirname):
             raise OSError, "Failed to remove dir for unknown reason."
         raise OSError, excs
 
+def rm_dir(dirname):
+    # Renamed to be like shutil.rmtree and unlike rmdir.
+    return rmtree(dirname)
 
 def remove_if_possible(f):
     try:
