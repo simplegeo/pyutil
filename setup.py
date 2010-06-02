@@ -54,6 +54,11 @@ else:
 
 setup_requires = []
 
+# setuptools_trial is needed if you want "./setup.py trial" or
+# "./setup.py test" to execute the tests.
+# http://pypi.python.org/pypi/setuptools_trial
+setup_requires.extend(['setuptools_trial >= 0.5'])
+
 # darcsver is needed only if you want "./setup.py darcsver" to write a new
 # version stamp in pyutil/_version.py, with a version number derived from
 # darcs history.  http://pypi.python.org/pypi/darcsver
