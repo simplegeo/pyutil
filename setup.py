@@ -90,7 +90,8 @@ def _setup(test_suite):
           packages=find_packages(),
           include_package_data=True,
           setup_requires=setup_requires,
-          install_requires=['argparse >= 0.8', 'zbase32 >= 1.0', 'simplejson >= 2.1.0'],
+          extras_require={'jsonutil': ['simplejson >= 2.1.0',]},
+          install_requires=['argparse >= 0.8', 'zbase32 >= 1.0',],
           classifiers=trove_classifiers,
           entry_points = {
               'console_scripts': [
