@@ -6,6 +6,7 @@ l = []
 s = None
 
 def data_strings(N):
+    assert isinstance(N, int), (N, type(N))
     del l[:]
     for i in range(N):
         l.append(repr(randutil.insecurerandstr(4)))
@@ -47,4 +48,8 @@ for i in (data_strings, data_floats, data_Decimals):
     for e in (ud, ue, jd, je):
     # for e in (ue,):
         print "i: %s, e: %s" % (i, e,)
-        benchutil.bench(e, initfunc=i, TOPXP=15, profile=False)
+        try:
+            benchutil.bench(e, initfunc=i, TOPXP=5, profile=False)
+        except TypeError, e:
+            print "skipping due to %s" % (e,)
+benchutil.print_bench_footer()
