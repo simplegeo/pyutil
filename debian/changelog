@@ -1,3 +1,9 @@
+python-pyutil (1.7.9-sg0) unstable; urgency=low
+
+  * New upstream version.
+
+ -- Ian Eure <ian@simplegeo.com>  Wed, 16 Jun 2010 11:30:39 -0700
+
 python-pyutil (1.7.6-3) unstable; urgency=low
 
   * Fix dependencies.
