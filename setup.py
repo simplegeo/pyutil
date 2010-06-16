@@ -54,18 +54,6 @@ else:
 
 setup_requires = []
 
-# darcsver is needed only if you want "./setup.py darcsver" to write a new
-# version stamp in pyutil/_version.py, with a version number derived from
-# darcs history.  http://pypi.python.org/pypi/darcsver
-if 'darcsver' in sys.argv[1:]:
-    setup_requires.append('darcsver >= 1.0.0')
-
-# setuptools_darcs is required to produce complete distributions (such as with
-# "sdist" or "bdist_egg"), unless there is a pyutil.egg-info/SOURCE.txt file
-# present which contains a complete list of files that should be included.
-# http://pypi.python.org/pypi/setuptools_darcs
-setup_requires.append('setuptools_darcs >= 1.1.0')
-
 data_fnames=[ 'COPYING.GPL', 'COPYING.TGPPL.html', 'README.txt', 'CREDITS' ]
 
 # In case we are building for a .deb with stdeb's sdist_dsc command, we put the
