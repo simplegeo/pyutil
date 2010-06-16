@@ -101,6 +101,7 @@ def _setup(test_suite):
                   'randfile = pyutil.scripts.randfile:main',
                   'unsort = pyutil.scripts.unsort:main',
                   'verinfo = pyutil.scripts.verinfo:main',
+                  'try_decoding = pyutil.scripts.try_decoding:main',
                   ] },
           test_suite=test_suite,
           zip_safe=False, # I prefer unzipped for easier access.
