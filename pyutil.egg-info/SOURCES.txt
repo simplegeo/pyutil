@@ -1,9 +1,14 @@
+
+.binaries
+.boringfiles
+.gitignore
 COPYING.GPL
 COPYING.TGPPL.html
 CREDITS
 README.txt
 copyright
 ez_setup.py
+setup.cfg
 setup.py
 pyutil/PickleSaver.py
 pyutil/__init__.py
@@ -11,6 +16,7 @@ pyutil/_version.py
 pyutil/assertutil.py
 pyutil/benchutil.py
 pyutil/cache.py
+pyutil/decimalutil.py
 pyutil/dictutil.py
 pyutil/fileutil.py
 pyutil/find_exe.py
@@ -52,11 +58,13 @@ pyutil/scripts/memdump2dot.py
 pyutil/scripts/randcookie.py
 pyutil/scripts/randfile.py
 pyutil/scripts/tailx.py
+pyutil/scripts/try_decoding.py
 pyutil/scripts/unsort.py
 pyutil/scripts/verinfo.py
 pyutil/test/__init__.py
 pyutil/test/test_assertutil.py
 pyutil/test/test_cache.py
+pyutil/test/test_decimalutil.py
 pyutil/test/test_dictutil.py
 pyutil/test/test_fileutil.py
 pyutil/test/test_iputil.py

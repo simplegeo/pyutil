@@ -1,4 +1,4 @@
-#  Copyright (c) 2002-2009 Zooko Wilcox-O'Hearn
+#  Copyright (c) 2002-2010 Zooko Wilcox-O'Hearn
 #  This file is part of pyutil; see README.txt for licensing terms.
 
 """
@@ -155,7 +155,7 @@ class _Dir(object):
             fo = open(ffn)
         self.register_file(fo)
         return fo
-       
+
     def subdir(self, dirname):
         """
         Create a subdirectory in the tempdir and remember it so as to call
@@ -166,21 +166,23 @@ class _Dir(object):
         ffn = os.path.join(self.name, dirname)
         sd = _Dir(ffn, self.cleanup)
         self.register_subdir(sd)
-       
+        make_dirs(sd.name)
+        return sd
+
     def register_file(self, fileobj):
         """
         Remember the file object and call close() on it before attempting to
         clean up.
         """
         self.files.append(fileobj)
-       
+
     def register_subdir(self, dirobj):
         """
         Remember the _Dir object and call shutdown() on it before attempting
         to clean up.
         """
         self.subdirs.add(dirobj)
-       
+
     def shutdown(self):
         if self.cleanup:
             for subdir in hasattr(self, 'subdirs') and self.subdirs or []:
@@ -238,7 +240,7 @@ class ReopenableNamedTemporaryFile:
     def __init__(self, *args, **kwargs):
         fd, self.name = tempfile.mkstemp(*args, **kwargs)
         os.close(fd)
-      
+
     def __repr__(self):
         return "<%s instance at %x %s>" % (self.__class__.__name__, id(self), self.name)
 
@@ -247,10 +249,10 @@ class ReopenableNamedTemporaryFile:
 
     def __del__(self):
         self.shutdown()
-       
+
     def shutdown(self):
         remove(self.name)
-  
+
 def make_dirs(dirname, mode=0777):
     """
     An idempotent version of os.makedirs().  If the dir already exists, do
@@ -270,7 +272,7 @@ def make_dirs(dirname, mode=0777):
             raise tx
         raise exceptions.IOError, "unknown error prevented creation of directory, or deleted the directory immediately after creation: %s" % dirname # careful not to construct an IOError with a 2-tuple, as that has a special meaning...
 
-def rm_dir(dirname):
+def rmtree(dirname):
     """
     A threadsafe and idempotent version of shutil.rmtree().  If the dir is
     already gone, do nothing and return without raising an exception.  If this
@@ -306,6 +308,9 @@ def rm_dir(dirname):
             raise OSError, "Failed to remove dir for unknown reason."
         raise OSError, excs
 
+def rm_dir(dirname):
+    # Renamed to be like shutil.rmtree and unlike rmdir.
+    return rmtree(dirname)
 
 def remove_if_possible(f):
     try:

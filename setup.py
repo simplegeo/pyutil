@@ -54,6 +54,11 @@ else:
 
 setup_requires = []
 
+# setuptools_trial is needed if you want "./setup.py trial" or
+# "./setup.py test" to execute the tests.
+# http://pypi.python.org/pypi/setuptools_trial
+setup_requires.extend(['setuptools_trial >= 0.5'])
+
 # darcsver is needed only if you want "./setup.py darcsver" to write a new
 # version stamp in pyutil/_version.py, with a version number derived from
 # darcs history.  http://pypi.python.org/pypi/darcsver
@@ -85,7 +90,8 @@ def _setup(test_suite):
           packages=find_packages(),
           include_package_data=True,
           setup_requires=setup_requires,
-          install_requires=['argparse >= 0.8', 'zbase32 >= 1.0', 'simplejson >= 2.1.0'],
+          extras_require={'jsonutil': ['simplejson >= 2.1.0',]},
+          install_requires=['argparse >= 0.8', 'zbase32 >= 1.0',],
           classifiers=trove_classifiers,
           entry_points = {
               'console_scripts': [
@@ -95,6 +101,7 @@ def _setup(test_suite):
                   'randfile = pyutil.scripts.randfile:main',
                   'unsort = pyutil.scripts.unsort:main',
                   'verinfo = pyutil.scripts.verinfo:main',
+                  'try_decoding = pyutil.scripts.try_decoding:main',
                   ] },
           test_suite=test_suite,
           zip_safe=False, # I prefer unzipped for easier access.

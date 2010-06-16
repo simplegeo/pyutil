@@ -1,4 +1,4 @@
-from unittest import TestCase
+from twisted.trial.unittest import SkipTest, TestCase
 
 from pyutil.jsonutil import encoder
 
@@ -26,6 +26,8 @@ class TestEncodeBaseStringAscii(TestCase):
         self._test_encode_basestring_ascii(encoder.py_encode_basestring_ascii)
 
     def test_c_encode_basestring_ascii(self):
+        if not encoder.c_encode_basestring_ascii:
+            raise SkipTest("no C extension speedups available to test")
         self._test_encode_basestring_ascii(encoder.c_encode_basestring_ascii)
 
     def _test_encode_basestring_ascii(self, encode_basestring_ascii):

@@ -1,4 +1,5 @@
 [console_scripts]
+try_decoding = pyutil.scripts.try_decoding:main
 randfile = pyutil.scripts.randfile:main
 lines = pyutil.scripts.lines:main
 unsort = pyutil.scripts.unsort:main
