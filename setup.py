@@ -54,11 +54,6 @@ else:
 
 setup_requires = []
 
-# setuptools_trial is needed if you want "./setup.py trial" or
-# "./setup.py test" to execute the tests.
-# http://pypi.python.org/pypi/setuptools_trial
-setup_requires.extend(['setuptools_trial >= 0.5'])
-
 # darcsver is needed only if you want "./setup.py darcsver" to write a new
 # version stamp in pyutil/_version.py, with a version number derived from
 # darcs history.  http://pypi.python.org/pypi/darcsver
@@ -90,6 +85,7 @@ def _setup(test_suite):
           packages=find_packages(),
           include_package_data=True,
           setup_requires=setup_requires,
+          tests_require=['setuptools_trial >= 0.5'],
           extras_require={'jsonutil': ['simplejson >= 2.1.0',]},
           install_requires=['argparse >= 0.8', 'zbase32 >= 1.0',],
           classifiers=trove_classifiers,
