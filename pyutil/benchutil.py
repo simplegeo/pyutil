@@ -101,11 +101,12 @@ def makeg(func):
             func()
     return blah
 
-def rep_bench(func, n, initfunc=None, MAXREPS=10, MAXTIME=60.0, profile=False, profresults="pyutil-benchutil.prof"):
+def rep_bench(func, n, initfunc=None, MAXREPS=10, MAXTIME=60.0, profile=False, profresults="pyutil-benchutil.prof", UNITS_PER_SECOND=1):
     """
     Will run the func up to MAXREPS times, but won't start a new run if MAXTIME
     (wall-clock time) has already elapsed (unless MAXTIME is None).
     """
+    assert isinstance(n, int), (n, type(n))
     starttime = time.realtime()
     tls = [] # elapsed time in nanoseconds
     while ((len(tls) < MAXREPS) or (MAXREPS is None)) and ((MAXTIME is None) or ((time.realtime() - starttime) < MAXTIME)):
@@ -116,7 +117,7 @@ def rep_bench(func, n, initfunc=None, MAXREPS=10, MAXTIME=60.0, profile=False, p
         except BadMeasure:
             pass
         else:
-            tls.append(tl * 10**9)
+            tls.append(tl * UNITS_PER_SECOND)
     assert tls
     sumtls = reduce(operator.__add__, tls)
     mean = sumtls / len(tls)
@@ -175,19 +176,29 @@ def bench_it(func, n, profile=False, profresults="pyutil-benchutil.prof"):
     _assert(timeelapsed*MARGINOFERROR > worstemptymeasure, "Invoking func %s(%s) took only %0.20f seconds, but we cannot accurately measure times much less than %0.20f seconds.  Therefore we cannot produce good results here.  Try benchmarking a more time-consuming variant." % (func, n, timeelapsed, worstemptymeasure,))
     return timeelapsed
 
-def bench(func, initfunc=None, TOPXP=21, MAXREPS=5, MAXTIME=60.0, profile=False, profresults="pyutil-benchutil.prof", outputjson=False, jsonresultsfname="pyutil-benchutil-results.json"):
+def bench(func, initfunc=None, TOPXP=21, MAXREPS=5, MAXTIME=60.0, profile=False, profresults="pyutil-benchutil.prof", outputjson=False, jsonresultsfname="pyutil-benchutil-results.json", UNITS_PER_SECOND=1):
     BSIZES = []
     for i in range(TOPXP-6, TOPXP+1, 2):
-        BSIZES.append(2 ** i)
+        n = int(2 ** i)
+        if n < 1:
+            n = 1
+        if BSIZES and n <= BSIZES[-1]:
+            n *= 2
+        BSIZES.append(n)
 
     res = {}
     for BSIZE in BSIZES:
         print "N: %7d," % BSIZE,
         sys.stdout.flush()
-        r = rep_bench(func, BSIZE, initfunc=initfunc, MAXREPS=MAXREPS, MAXTIME=MAXTIME, profile=profile, profresults=profresults)
+        r = rep_bench(func, BSIZE, initfunc=initfunc, MAXREPS=MAXREPS, MAXTIME=MAXTIME, profile=profile, profresults=profresults, UNITS_PER_SECOND=UNITS_PER_SECOND)
         res[BSIZE] = r
 
     if outputjson:
         write_file(jsonresultsfname, json.dumps(res))
 
     return res
+
+def print_bench_footer(UNITS_PER_SECOND=1):
+    print "all results are in time units per N"
+    print "time units per second: %s; seconds per time unit: %s" % (UNITS_PER_SECOND, 1/UNITS_PER_SECOND)
+
