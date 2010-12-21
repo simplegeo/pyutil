@@ -1,6 +1,7 @@
 """
 Tools to mess with dicts.
 """
+import warnings
 
 import copy, operator
 from bisect import bisect_left, insort_left
@@ -11,6 +12,7 @@ def move(k, d1, d2, strict=False):
     """
     Move item with key k from d1 to d2.
     """
+    warnings.warn("deprecated", DeprecationWarning)
     if strict and not d1.has_key(k):
         raise KeyError, k
 
@@ -23,6 +25,7 @@ def subtract(d1, d2):
 
     @returns d1
     """
+    warnings.warn("deprecated", DeprecationWarning)
     if len(d1) > len(d2):
         for k in d2.keys():
             if d1.has_key(k):
@@ -35,12 +38,14 @@ def subtract(d1, d2):
 
 class DictOfSets(dict):
     def add(self, key, value):
+        warnings.warn("deprecated", DeprecationWarning)
         if key in self:
             self[key].add(value)
         else:
             self[key] = set([value])
 
     def discard(self, key, value):
+        warnings.warn("deprecated", DeprecationWarning)
         if not key in self:
             return
         self[key].discard(value)
@@ -49,6 +54,7 @@ class DictOfSets(dict):
 
 class UtilDict:
     def __init__(self, initialdata={}):
+        warnings.warn("deprecated", DeprecationWarning)
         self.d = {}
         self.update(initialdata)
 
@@ -171,6 +177,7 @@ class UtilDict:
 
 class NumDict:
     def __init__(self, initialdict={}):
+        warnings.warn("deprecated", DeprecationWarning)
         self.d = copy.deepcopy(initialdict)
 
     def add_num(self, key, val, default=0):
@@ -413,6 +420,7 @@ class ValueOrderedDict:
         return ValueOrderedDict.ValueIterator(self)
 
     def __init__(self, initialdata={}):
+        warnings.warn("deprecated", DeprecationWarning)
         self.d = {} # k: key, v: val
         self.l = [] # sorted list of tuples of (val, key,)
         self.update(initialdata)

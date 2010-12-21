@@ -1,6 +1,5 @@
-#  Copyright (c) 2002-2009 Zooko Wilcox-O'Hearn
-#  portions Copyright (c) 2001 Autonomous Zone Industries
-#  This file is part of pyutil; see README.txt for licensing terms.
+﻿#  Copyright © 2002-2010 Zooko Wilcox-O'Hearn
+#  This file is part of pyutil; see README.rst for licensing terms.
 
 """
 What word has three letters and a 'x' in it?
@@ -8,12 +7,13 @@ What word has three letters and a 'x' in it?
 Not that one silly.
 """
 
+import warnings
 import array, operator
 
-from pyutil.humanreadable import hr
-from pyutil.assertutil import _assert, precondition, postcondition
+from pyutil.assertutil import precondition
 
 def py_xor(str1, str2):
+    warnings.warn("deprecated", DeprecationWarning)
     precondition(len(str1) == len(str2), "str1 and str2 are required to be of the same length.", str1=str1, str2=str2)
 
     if len(str1)%4 == 0:
@@ -39,6 +39,7 @@ def py_xor_simple(str1, str2):
     Benchmarks show that this is the same speed as py_xor() for small strings
     and much slower for large strings, so don't use it. --Zooko 2002-04-29
     """
+    warnings.warn("deprecated", DeprecationWarning)
     precondition(len(str1) == len(str2), "str1 and str2 are required to be of the same length.", str1=str1, str2=str2)
 
     return ''.join(map(chr, map(operator.__xor__, map(ord, str1), map(ord, str2))))

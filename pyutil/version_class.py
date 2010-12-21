@@ -1,20 +1,15 @@
-# Copyright (c) 2004-2009 Zooko Wilcox-O'Hearn
-#  This file is part of pyutil; see README.txt for licensing terms.
+﻿# -*- coding: utf-8 -*-
+# Copyright (c) 2004-2010 Zooko Wilcox-O'Hearn
+#  This file is part of pyutil; see README.rst for licensing terms.
 
 """
 extended version number class
 """
 
-# from setuptools, but intended to be included in future version of Python Standard Library (PEP 365)
-try:
-    import pkg_resources
-except ImportError:
-    import distutils.version
-    def cmp_version(v1, v2):
-        return cmp(distutils.version.LooseVersion(str(v1)), distutils.version.LooseVersion(str(v2)))
-else:
-    def cmp_version(v1, v2):
-        return cmp(pkg_resources.parse_version(str(v1)), pkg_resources.parse_version(str(v2)))
+# verlib a.k.a. distutils.version by Tarek Ziadé.
+from pyutil.verlib import NormalizedVersion
+def cmp_version(v1, v2):
+    return cmp(NormalizedVersion(str(v1)), NormalizedVersion(str(v2)))
 
 # Python Standard Library
 import re
@@ -85,8 +80,9 @@ import re
 # applied since the last version number tag was applied.  The revision number is
 # the count of all patches that have been applied in the history.
 
-VERSION_BASE_RE_STR="(\d+)(\.(\d+)(\.(\d+))?)?((a|b|c)(\d+))?"
-VERSION_RE_STR=VERSION_BASE_RE_STR + "(-(\d+|r\d+))?"
+VERSION_BASE_RE_STR="(\d+)(\.(\d+)(\.(\d+))?)?((a|b|c)(\d+))?(\.dev(\d+))?"
+VERSION_SUFFIX_RE_STR="(-(\d+|r\d+)|.post\d+)?"
+VERSION_RE_STR=VERSION_BASE_RE_STR + VERSION_SUFFIX_RE_STR
 VERSION_RE=re.compile("^" + VERSION_RE_STR + "$")
 
 class Version(object):
@@ -115,16 +111,22 @@ class Version(object):
         self.micro = mo.group(5) and int(mo.group(5)) or 0
         reltag = mo.group(6)
         if reltag:
-            reltagnum = int(mo.group(7))
-            self.prereleasetag = reltag
+            reltagnum = int(mo.group(8))
+            self.prereleasetag = mo.group(7)
             self.prerelease = reltagnum
 
-        if mo.group(9):
-            if mo.group(10)[0] == 'r':
-                self.revision = int(mo.group(10)[1:])
+        if mo.group(11):
+            if mo.group(11)[0] == '-':
+                if mo.group(12)[0] == 'r':
+                    self.revision = int(mo.group(12)[1:])
+                else:
+                    self.nano = int(mo.group(12))
             else:
-                self.nano = int(mo.group(10))
+                assert mo.group(11).startswith('.post'), mo.group(11)
+                self.revision = int(mo.group(11)[5:])
 
+        # XXX in the future, to be compatible with the Python "rational version numbering" scheme, we should move to using .post$REV instead of -r$REV:
+        # self.fullstr = "%d.%d.%d%s%s" % (self.major, self.minor, self.micro, self.prereleasetag and "%s%d" % (self.prereleasetag, self.prerelease,) or "", self.nano and "-%d" % (self.nano,) or self.revision and ".post%d" % (self.revision,) or "",)
         self.fullstr = "%d.%d.%d%s%s" % (self.major, self.minor, self.micro, self.prereleasetag and "%s%d" % (self.prereleasetag, self.prerelease,) or "", self.nano and "-%d" % (self.nano,) or self.revision and "-r%d" % (self.revision,) or "",)
 
     def user_str(self):

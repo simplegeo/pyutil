@@ -7,8 +7,6 @@ from random import randrange
 import argparse
 
 def main():
-    argv = sys.argv
-
     CHUNKSIZE=2**20
 
     parser = argparse.ArgumentParser(prog="randfile", description="Create a file of pseudorandom bytes (not cryptographically secure).")

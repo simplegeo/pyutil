@@ -1,4 +1,4 @@
-#  Copyright (c) 2002-2009 Zooko "Zooko" Wilcox-O'Hearn
+#  Copyright (c) 2002-2010 Zooko "Zooko" Wilcox-O'Hearn
 
 """
 This module offers three implementations of an LRUCache, which is a dict that
@@ -7,8 +7,7 @@ fixed maximum size.
 
 Warning: if -O optimizations are not turned on then LRUCache performs
 extensive self-analysis in every function call, which can take minutes
-and minutes for a large cache.  Turn on -O, or comment out assert
-self._assert_invariants()
+and minutes for a large cache.  Turn on -O, or comment out ``assert self._assert_invariants()``
 """
 
 import operator
@@ -540,7 +539,7 @@ class SmallLRUCache(dict):
             self._lru = dict.keys(self)
             assert self._assert_invariants()
             return self
-      
+
         for k in otherdict.iterkeys():
             if dict.has_key(self, k):
                 self._lru.remove(k)
@@ -733,4 +732,4 @@ class LinkedListLRUCache:
     def popitem(self):
         i = self.last.me
         obj = self.remove(i[0])
-        return i
+        return obj

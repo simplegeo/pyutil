@@ -1,6 +1,6 @@
 #  Copyright (c) 2001 Autonomous Zone Industries
 #  Copyright (c) 2002-2009 Zooko "Zooko" Wilcox-O'Hearn
-#  This file is part of pyutil; see README.txt for licensing terms.
+#  This file is part of pyutil; see README.rst for licensing terms.
 
 import exceptions, os
 from repr import Repr

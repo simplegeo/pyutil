@@ -1,15 +1,17 @@
 # Copyright (c) 2002-2010 Zooko Wilcox-O'Hearn
-#  This file is part of pyutil; see README.txt for licensing terms.
+#  This file is part of pyutil; see README.rst for licensing terms.
 
+import warnings
 import os, random
 
 try:
     import hashexpand
     class SHA256Random(hashexpand.SHA256Expander, random.Random):
         def __init__(self, seed=None, deterministic=True):
+            warnings.warn("deprecated", DeprecationWarning)
             if not deterministic:
                 raise NotImplementedError, "SHA256Expander is always deterministic.  For non-deterministic, try urandomRandom."
-            
+
             hashexpand.SHA256Expander.__init__(self)
             random.Random.__init__(self, seed)
             self.seed(seed)
@@ -23,6 +25,7 @@ try:
 
     class SHA256Random(hashexpand.SHA256Expander, random.Random):
         def __init__(self, seed=""):
+            warnings.warn("deprecated", DeprecationWarning)
             hashexpand.SHA256Expander.__init__(self)
             self.seed(seed)
 
@@ -46,6 +49,7 @@ class devrandomRandom(random.Random):
     Not repeatable.
     """
     def __init__(self):
+        warnings.warn("deprecated", DeprecationWarning)
         self.dr = open("/dev/random", "r")
 
     def get(self, bytes):
@@ -61,6 +65,7 @@ class devurandomRandom(random.Random):
     Not repeatable.
     """
     def get(self, bytes):
+        warnings.warn("deprecated", DeprecationWarning)
         return os.urandom(bytes)
 
 
@@ -78,4 +83,3 @@ def randstr(n):
 import random as insecurerandom
 def insecurerandstr(n):
     return ''.join(map(chr, map(insecurerandom.randrange, [0]*n, [256]*n)))
-

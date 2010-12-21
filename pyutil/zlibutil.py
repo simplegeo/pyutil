@@ -1,6 +1,5 @@
-#  Copyright (c) 2002-2009 Zooko Wilcox-O'Hearn
-#  portions Copyright (c) 2001 Autonomous Zone Industries
-#  This file is part of pyutil; see README.txt for licensing terms.
+#  Copyright (c) 2002-2010 Zooko Wilcox-O'Hearn
+#  This file is part of pyutil; see README.rst for licensing terms.
 
 """
 Making your zlib experience that much nicer!
@@ -20,9 +19,16 @@ class UnsafeDecompressError(DecompressError): pass # This means it would take mo
 class TooBigError(DecompressError): pass # This means the resulting uncompressed text would exceed the maximum allowed length.
 class ZlibError(DecompressError): pass # internal error, probably due to the input not being zlib compressed text
 
-MINMAXMEM=76*2**10 + 128 * 1032 * 2 + 2063 - 1 # constant memory overhead of zlib (76 KB), plus minbite (128 bytes) times maxexpansion (1032) times buffer-copying duplication (2), plus 2063 so as to reach the ceiling of div (2*1032)
+# The smallest limit that you can impose on zlib decompression and still have
+# a chance of succeeding at decompression.
 
-# You should really provide a maxmem which is much higher than MINMEM.  If
+# constant memory overhead of zlib (76 KB), plus minbite (128 bytes) times
+# maxexpansion (1032) times buffer-copying duplication (2), plus 2063 so as
+# to reach the ceiling of div (2*1032)
+
+MINMAXMEM=76*2**10 + 128 * 1032 * 2 + 2063 - 1
+
+# You should really specify a maxmem which is much higher than MINMAXMEM. If
 # maxmem=MINMAXMEM, we will be reduced to decompressing the input in
 # 128-byte bites, and furthermore unless the decompressed text is quite small,
 # we will be forced to give up and spuriously raise UnsafeDecompressError!
@@ -253,4 +259,3 @@ def decompress_to_spool(zbuf, fileobj, maxlen=(65 * (2**20)), maxmem=(65 * (2**2
     offset = offset + lencompbite
     fileobj.write(tmpstr)
     tmpstr = ''
-

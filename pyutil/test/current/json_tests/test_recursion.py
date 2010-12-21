@@ -51,7 +51,7 @@ class TestRecursion(TestCase):
         else:
             self.fail("didn't raise ValueError on dict recursion")
         x = {}
-        y = {"a": x, "b": x}
+        {"a": x, "b": x}
         # ensure that the marker is cleared
         json.dumps(x)
 

@@ -1,5 +1,5 @@
 # Copyright (c) 2003-2009 Zooko Wilcox-O'Hearn
-#  This file is part of pyutil; see README.txt for licensing terms.
+#  This file is part of pyutil; see README.rst for licensing terms.
 
 """
 Tests useful in assertion checking, prints out nicely formated messages too.

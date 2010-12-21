@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
 #  Copyright (c) 2002-2009 Zooko "Zooko" Wilcox-O'Hearn
-#  This file is part of pyutil; see README.txt for licensing terms.
+#  This file is part of pyutil; see README.rst for licensing terms.
 
 import random, sys, traceback, unittest
 
-from pyutil.assertutil import _assert, precondition, postcondition
+from pyutil.assertutil import _assert
 
-from pyutil.dictutil import *
+from pyutil import dictutil
 
 class EqButNotIs:
     def __init__(self, x):
@@ -34,7 +34,7 @@ class Testy(unittest.TestCase):
     def _help_test_empty_dict(self, klass):
         d1 = klass()
         d2 = klass({})
-    
+
         self.failUnless(d1 == d2, "d1: %r, d2: %r" % (d1, d2,))
         self.failUnless(len(d1) == 0)
         self.failUnless(len(d2) == 0)
@@ -42,7 +42,7 @@ class Testy(unittest.TestCase):
     def _help_test_nonempty_dict(self, klass):
         d1 = klass({'a': 1, 'b': "eggs", 3: "spam",})
         d2 = klass({'a': 1, 'b': "eggs", 3: "spam",})
-   
+
         self.failUnless(d1 == d2)
         self.failUnless(len(d1) == 3, "%s, %s" % (len(d1), d1,))
         self.failUnless(len(d2) == 3)
@@ -95,7 +95,7 @@ class Testy(unittest.TestCase):
         d[fake3] = 8
 
     def test_em(self):
-        for klass in (UtilDict, NumDict, ValueOrderedDict,):
+        for klass in (dictutil.UtilDict, dictutil.NumDict, dictutil.ValueOrderedDict,):
             # print "name of class: ", klass
             for helper in (self._help_test_empty_dict, self._help_test_nonempty_dict, self._help_test_eq_but_notis,):
                 # print "name of test func: ", helper

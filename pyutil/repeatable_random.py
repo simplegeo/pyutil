@@ -38,7 +38,7 @@ def force_repeatability():
     from idlib import i2b
     def fakeurandom(n):
         if n > 64:
-            raise Error("Can't produce more than 64 bytes of pseudorandomness efficiently.")
+            raise ("Can't produce more than 64 bytes of pseudorandomness efficiently.")
         elif n == 0:
             return ''
         else:

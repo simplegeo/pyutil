@@ -1,7 +1,5 @@
-# Copyright (c) 2002-2009 Zooko Wilcox-O'Hearn
-#  This file is part of pyutil; see README.txt for licensing terms.
-
-from string import *
+# Copyright (c) 2002-2010 Zooko Wilcox-O'Hearn
+#  This file is part of pyutil; see README.rst for licensing terms.
 
 def commonprefix(l):
     cp = []

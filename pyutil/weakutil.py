@@ -1,5 +1,7 @@
-# Copyright (c) 2005-2009 Zooko Wilcox-O'Hearn
-#  This file is part of pyutil; see README.txt for licensing terms.
+# Copyright (c) 2005-2010 Zooko Wilcox-O'Hearn
+#  This file is part of pyutil; see README.rst for licensing terms.
+
+import warnings
 
 # from the Python Standard Library
 from weakref import ref
@@ -15,6 +17,7 @@ class WeakMethod:
     """ Wraps a function or, more importantly, a bound method, in
     a way that allows a bound method's object to be GC'd """
     def __init__(self, fn, callback=None):
+        warnings.warn("deprecated", DeprecationWarning)
         precondition(hasattr(fn, 'im_self'), "fn is required to be a bound method.")
         self._cleanupcallback = callback
         self._obj = ref(fn.im_self, self.call_cleanup_cb)

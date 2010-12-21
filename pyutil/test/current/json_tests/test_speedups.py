@@ -1,4 +1,3 @@
-import decimal
 from twisted.trial.unittest import SkipTest, TestCase
 
 from pyutil.jsonutil import decoder

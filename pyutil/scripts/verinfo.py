@@ -3,7 +3,7 @@
 import exceptions
 class UsageError(exceptions.Exception): pass
 
-import os, sys
+import sys
 import pkg_resources
 
 def main():

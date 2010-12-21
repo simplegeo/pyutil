@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
 # Copyright (c) 2002 Luke 'Artimage' Nelson
-# Copyright (c) 2005-2009 Zooko Wilcox-O'Hearn
-#  This file is part of pyutil; see README.txt for licensing terms.
+# Copyright (c) 2005-2010 Zooko Wilcox-O'Hearn
+#  This file is part of pyutil; see README.rst for licensing terms.
 
-import tempfile, unittest, os
+import os
 
 try:
     from twisted.trial import unittest

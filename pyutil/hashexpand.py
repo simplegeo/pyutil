@@ -1,6 +1,8 @@
 #  Copyright (c) 2000 Autonomous Zone Industries
 #  Copyright (c) 2002-2009 Zooko Wilcox-O'Hearn
-#  This file is part of pyutil; see README.txt for licensing terms.
+#  This file is part of pyutil; see README.rst for licensing terms.
+
+import warnings
 
 """
 Cryptographically strong pseudo-random number generator based on SHA256.
@@ -27,6 +29,7 @@ class SHA256Expander:
     well-analyzed KDF or stream cipher or whatever it is that you need.
     """
     def __init__(self, seed=None):
+        warnings.warn("deprecated", DeprecationWarning)
         if seed is not None:
             self.seed(seed)
 

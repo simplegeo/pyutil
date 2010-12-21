@@ -2,11 +2,12 @@
 
 try:
     from twisted.trial import unittest
+    unittest # http://divmod.org/trac/ticket/1499
 except ImportError, le:
     print "Skipping test_iputil since it requires Twisted and Twisted could not be imported: %s" % (le,)
 else:
     from pyutil import iputil, testutil
-    import re, sys
+    import re
 
     DOTTED_QUAD_RE=re.compile("^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$")
 
@@ -18,9 +19,10 @@ else:
         def test_list_async(self):
             try:
                 from twisted.trial import unittest
-                from pyutil import iputil, testutil
+                unittest # http://divmod.org/trac/ticket/1499
+                from pyutil import iputil
             except ImportError, le:
-                raise SkipTest("iputil could not be imported (probably because its dependency, Twisted, is not installed).  %s" % (le,))
+                raise unittest.SkipTest("iputil could not be imported (probably because its dependency, Twisted, is not installed).  %s" % (le,))
 
             d = iputil.get_local_addresses_async()
             def _check(addresses):

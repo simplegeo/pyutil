@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-# Copyright (c) 2005-2009 Zooko Wilcox-O'Hearn
-#  This file is part of pyutil; see README.txt for licensing terms.
+# Copyright (c) 2005-2010 Zooko Wilcox-O'Hearn
+#  This file is part of pyutil; see README.rst for licensing terms.
 
-from pyutil.lineutil import *
+from pyutil import lineutil
 
 import sys
 
@@ -26,10 +26,10 @@ def main():
         pipe = True
 
     if pipe:
-        lineify_fileobjs(sys.stdin, sys.stdout)
+        lineutil.lineify_fileobjs(sys.stdin, sys.stdout)
     else:
         for fn in sys.argv[1:]:
-            lineify_file(fn, strip, nobak)
+            lineutil.lineify_file(fn, strip, nobak)
 
 if __name__ == '__main__':
     main()

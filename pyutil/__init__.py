@@ -20,3 +20,4 @@ except ImportError:
     # come with a _version.py, so we don't know what our version is. This should
     # not happen very often.
     pass
+__version__ # hush pyflakes

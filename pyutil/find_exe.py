@@ -1,3 +1,4 @@
+import warnings
 import os, sys
 from twisted.python.procutils import which
 
@@ -12,6 +13,7 @@ def find_exe(exename):
         sys.executable and the second element being the path to the
         exename + ".py", or else return False if one can't be found
     """
+    warnings.warn("deprecated", DeprecationWarning)
     exes = which(exename)
     exe = exes and exes[0]
     if not exe:

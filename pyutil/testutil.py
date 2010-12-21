@@ -4,13 +4,14 @@ from twisted.internet import defer, reactor
 from twisted.trial import unittest
 
 import repeatable_random
+repeatable_random # http://divmod.org/trac/ticket/1499
 
 class SignalMixin(unittest.TestCase):
     # This class is necessary for any code which wants to use Processes
     # outside the usual reactor.run() environment. It is copied from
     # Twisted's twisted.test.test_process
     sigchldHandler = None
-    
+
     def setUpClass(self):
         # make sure SIGCHLD handler is installed, as it should be on
         # reactor.run(). problem is reactor may not have been run when this
@@ -18,7 +19,7 @@ class SignalMixin(unittest.TestCase):
         if hasattr(reactor, "_handleSigchld") and hasattr(signal, "SIGCHLD"):
             self.sigchldHandler = signal.signal(signal.SIGCHLD,
                                                 reactor._handleSigchld)
-    
+
     def tearDownClass(self):
         if self.sigchldHandler:
             signal.signal(signal.SIGCHLD, self.sigchldHandler)
@@ -95,17 +96,20 @@ class TestMixin(SignalMixin):
             if p.active():
                 p.cancel()
             else:
-                print "WEIRNESS! pending timed call not active+!"
+                print "WEIRDNESS! pending timed call not active!"
         if required_to_quiesce and active:
             self.fail("Reactor was still active when it was required to be quiescent.")
 
 try:
     import win32file
     import win32con
-    def make_readonly(path):
+    def w_make_readonly(path):
         win32file.SetFileAttributes(path, win32con.FILE_ATTRIBUTE_READONLY)
-    def make_accessible(path):
+    def w_make_accessible(path):
         win32file.SetFileAttributes(path, win32con.FILE_ATTRIBUTE_NORMAL)
+    # http://divmod.org/trac/ticket/1499
+    make_readonly = w_make_readonly
+    make_accessible = w_make_accessible
 except ImportError:
     import stat
     def make_readonly(path):

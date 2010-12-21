@@ -16,12 +16,10 @@ def listcodecs(dir):
         except LookupError:
             # Codec not found
             continue
-        except Exception, reason:
+        except Exception:
             # Probably an error from importing the codec; still it's
             # a valid code name
-            if _debug:
-                print '* problem importing codec %r: %s' % \
-                      (name, reason)
+            pass
         names.append(name)
     return names
 
@@ -63,8 +61,6 @@ def type_unicode(argstr):
     return argstr.decode(argv_encoding)
 
 def main():
-    argv = sys.argv
-
     parser = argparse.ArgumentParser(prog="try_decoding", description="Try decoding some bytes with all sorts of different codecs and print out any that decode.")
 
     parser.add_argument('inputfile', help='file to decode or "-" for stdin', type=argparse.FileType('rb'), metavar='INF')

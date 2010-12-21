@@ -1,5 +1,5 @@
 #  Copyright (c) 2002-2010 Zooko Wilcox-O'Hearn
-#  This file is part of pyutil; see README.txt for licensing terms.
+#  This file is part of pyutil; see README.rst for licensing terms.
 
 """
 Benchmark a function for its behavior with respect to N.
@@ -18,10 +18,10 @@ the second, e.g.:
 ...  else:
 ...   return fib(N-1) + fib(N-2)
 ...
->>> rep_bench(fib, 25)
-best: 2.777e+06,   3th-best: 2.786e+06, mean: 2.829e+06,   3th-worst: 2.817e+06, worst: 3.133e+06 (of     10)
+>>> rep_bench(fib, 25, UNITS_PER_SECOND=1000)
+best: 1.968e+00,   3th-best: 1.987e+00, mean: 2.118e+00,   3th-worst: 2.175e+00, worst: 2.503e+00 (of     10)
 
-The output is reporting the number of nanoseconds that executing the function
+The output is reporting the number of milliseconds that executing the function
 took, divided by N, from ten different invocations of fib(). It reports the
 best, worst, M-th best, M-th worst, and mean, where "M" is the natural log of
 the number of invocations (in this case 10).
@@ -30,14 +30,17 @@ the number of invocations (in this case 10).
 
 >>> for N in 1, 5, 9, 13, 17, 21:
 ...  print "%2d" % N,
-...  rep_bench(fib, N)
-...
- 1 best: 9.537e+02,   3th-best: 9.537e+02, mean: 1.287e+03,   3th-worst: 1.907e+03, worst: 1.907e+03 (of     10)
- 5 best: 1.574e+03,   3th-best: 1.621e+03, mean: 1.774e+03,   3th-worst: 2.003e+03, worst: 2.003e+03 (of     10)
- 9 best: 4.901e+03,   3th-best: 5.007e+03, mean: 5.327e+03,   3th-worst: 5.325e+03, worst: 7.020e+03 (of     10)
-13 best: 1.884e+04,   3th-best: 1.900e+04, mean: 2.044e+04,   3th-worst: 2.131e+04, worst: 2.447e+04 (of     10)
-17 best: 8.011e+04,   3th-best: 9.641e+04, mean: 9.847e+04,   3th-worst: 1.015e+05, worst: 1.153e+05 (of     10)
-21 best: 4.422e+05,   3th-best: 4.433e+05, mean: 4.596e+05,   3th-worst: 4.674e+05, worst: 4.948e+05 (of     10)
+...  rep_bench(fib, N, UNITS_PER_SECOND=1000000)
+... 
+ 1 best: 9.537e-01,   3th-best: 9.537e-01, mean: 1.121e+00,   3th-worst: 1.192e+00, worst: 2.146e+00 (of     10)
+ 5 best: 5.722e-01,   3th-best: 6.199e-01, mean: 7.200e-01,   3th-worst: 8.106e-01, worst: 8.106e-01 (of     10)
+ 9 best: 2.437e+00,   3th-best: 2.464e+00, mean: 2.530e+00,   3th-worst: 2.570e+00, worst: 2.676e+00 (of     10)
+13 best: 1.154e+01,   3th-best: 1.168e+01, mean: 5.638e+01,   3th-worst: 1.346e+01, worst: 4.478e+02 (of     10)
+17 best: 6.230e+01,   3th-best: 6.247e+01, mean: 6.424e+01,   3th-worst: 6.460e+01, worst: 7.294e+01 (of     10)
+21 best: 3.376e+02,   3th-best: 3.391e+02, mean: 3.521e+02,   3th-worst: 3.540e+02, worst: 3.963e+02 (of     10)
+>>> print_bench_footer(UNITS_PER_SECOND=1000000)
+all results are in time units per N
+time units per second: 1000000; seconds per time unit: 0.000001
 
 (The pattern here is that as N grows, the time per N grows.)
 
@@ -67,7 +70,9 @@ and the main function is to make them be methods of the same object, e.g.:
  100000 best: 8.309e+02,   3th-best: 8.338e+02, mean: 8.435e+02,   3th-worst: 8.540e+02, worst: 8.559e+02 (of     10)
 1000000 best: 1.327e+03,   3th-best: 1.339e+03, mean: 1.349e+03,   3th-worst: 1.357e+03, worst: 1.374e+03 (of     10)
 
-3. Things to fix:
+3. Useful fact! rep_bench() returns a dict containing the numbers.
+
+4. Things to fix:
 
  a. I used to have it hooked up to use the "hotshot" profiler on the code being
  measured. I recently tried to change it to use the newer cProfile profiler
@@ -81,11 +86,9 @@ and the main function is to make them be methods of the same object, e.g.:
 """
 
 import cProfile, math, operator, sys, time
+from decimal import Decimal as D
 
-try:
-    import simplejson as json
-except ImportError:
-    import json
+#from pyutil import jsonutil as json
 
 if not hasattr(time, "realtime"):
     if sys.platform in ("win32", "cygwin",):
@@ -140,6 +143,8 @@ def rep_bench(func, n, initfunc=None, MAXREPS=10, MAXTIME=60.0, profile=False, p
 
     print "best: %(best)#8.03e, %(m)3dth-best: %(mth-best)#8.03e, mean: %(mean)#8.03e, %(m)3dth-worst: %(mth-worst)#8.03e, worst: %(worst)#8.03e (of %(num)6d)" % res
 
+    return res
+
 MARGINOFERROR = 10
 
 worstemptymeasure = 0
@@ -193,12 +198,12 @@ def bench(func, initfunc=None, TOPXP=21, MAXREPS=5, MAXTIME=60.0, profile=False,
         r = rep_bench(func, BSIZE, initfunc=initfunc, MAXREPS=MAXREPS, MAXTIME=MAXTIME, profile=profile, profresults=profresults, UNITS_PER_SECOND=UNITS_PER_SECOND)
         res[BSIZE] = r
 
-    if outputjson:
-        write_file(jsonresultsfname, json.dumps(res))
+    #if outputjson:
+    #    write_file(jsonresultsfname, json.dumps(res))
 
     return res
 
 def print_bench_footer(UNITS_PER_SECOND=1):
     print "all results are in time units per N"
-    print "time units per second: %s; seconds per time unit: %s" % (UNITS_PER_SECOND, 1/UNITS_PER_SECOND)
+    print "time units per second: %s; seconds per time unit: %s" % (UNITS_PER_SECOND, D(1)/UNITS_PER_SECOND)
 

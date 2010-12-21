@@ -1,6 +1,6 @@
 #  Copyright (c) 2001 Autonomous Zone Industries
 #  Copyright (c) 2002-2009 Zooko Wilcox-O'Hearn
-#  This file is part of pyutil; see README.txt for licensing terms.
+#  This file is part of pyutil; see README.rst for licensing terms.
 
 """
 An object that makes some of the attributes of your class persistent, pickling
@@ -10,6 +10,7 @@ them and lazily writing them to a file.
 # from the Python Standard Library
 import os
 import cPickle as pickle
+import warnings
 
 # from the pyutil library
 import fileutil
@@ -116,6 +117,8 @@ class PickleSaver(nummedobj.NummedObj):
         @param attrs: a dict whose keys are the names of all the attributes to be persistently stored and whose values are the initial default value that the attribute gets set to the first time it is ever used;  After this first initialization, the value will be persistent so the initial default value will never be used again.
         @param savecb: if not None, then it is a callable that will be called after each save completes (useful for unit tests) (savecb doesn't get called after a shutdown-save, only after a scheduled save)
         """
+        warnings.warn("deprecated", DeprecationWarning)
+
         nummedobj.NummedObj.__init__(self)
         self._DELAY = DELAY
 

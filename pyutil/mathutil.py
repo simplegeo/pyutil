@@ -1,5 +1,5 @@
-# Copyright (c) 2005-2009 Zooko Wilcox-O'Hearn
-#  This file is part of pyutil; see README.txt for licensing terms.
+# Copyright (c) 2005-2010 Zooko Wilcox-O'Hearn
+#  This file is part of pyutil; see README.rst for licensing terms.
 
 """
 A few commonly needed functions.

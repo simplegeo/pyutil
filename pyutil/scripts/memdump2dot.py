@@ -3,7 +3,7 @@
 import bindann
 bindann.install_exception_handler()
 
-import os, sys
+import sys
 
 inf = open(sys.argv[1], "r")
 
@@ -33,7 +33,7 @@ def parse_ref(l, i):
 
 def parse_memdump_line(l):
     result = []
-    
+
     i = l.find('-')
     objid = l[:i]
     (objdesc, i,) = parse_netstring(l, i+1)

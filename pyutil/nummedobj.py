@@ -1,6 +1,6 @@
 # Copyright (c) 2002-2009 Zooko Wilcox-O'Hearn
 # mailto:zooko@zooko.com
-#  This file is part of pyutil; see README.txt for licensing terms.
+#  This file is part of pyutil; see README.rst for licensing terms.
 
 import dictutil
 

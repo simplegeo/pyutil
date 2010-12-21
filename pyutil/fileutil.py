@@ -1,11 +1,11 @@
 #  Copyright (c) 2002-2010 Zooko Wilcox-O'Hearn
-#  This file is part of pyutil; see README.txt for licensing terms.
+#  This file is part of pyutil; see README.rst for licensing terms.
 
 """
 Futz with files like a pro.
 """
 
-import errno, exceptions, os, stat, tempfile, time
+import errno, exceptions, os, stat, tempfile
 
 try:
     import bsddb
@@ -13,8 +13,6 @@ except ImportError:
     DBNoSuchFileError = None
 else:
     DBNoSuchFileError = bsddb.db.DBNoSuchFileError
-
-from logutil import log
 
 # read_file() and write_file() copied from Mark Seaborn's blog post.  Please
 # read it for rationale:
@@ -33,103 +31,16 @@ def write_file(filename, data, mode='wb'):
   finally:
       fh.close()
 
-try:
-    from exceptions import WindowsError
-except ImportError:
-    def rename(src, dst, tries=4, basedelay=0.1):
-        return os.rename(src, dst)
+# For backwards-compatibility in case someone is using these names. We used to
+# have a superkludge in fileutil.py under these names.
+def rename(src, dst, tries=4, basedelay=0.1):
+    return os.rename(src, dst)
 
-    def remove(f, tries=4, basedelay=0.1):
-        return os.remove(f)
+def remove(f, tries=4, basedelay=0.1):
+    return os.remove(f)
 
-    def rmdir(f, tries=4, basedelay=0.1):
-        return os.rmdir(f)
-else:
-    def rename(src, dst, tries=4, basedelay=0.1):
-        """ Here is a superkludge to workaround the fact that occasionally on
-        Windows some other process (e.g. an anti-virus scanner, a local search
-        engine, a backup program, etc.) is looking at your file when you want to
-        move it, and hence you can't.  The horrible workaround is to sit and
-        spin, trying to delete it, for a short time and then give up.
-
-        With the default values of tries and basedelay this can block for less
-        than a second.
-
-        @param tries: number of tries -- each time after the first we wait twice
-        as long as the previous wait
-        @param basedelay: how long to wait before the second try
-        """
-        for i in range(tries-1):
-            try:
-                return os.rename(src, dst)
-            except WindowsError, le:
-                if le.winerror == 32:
-                    log.msg("KLUDGE Attempting to move file %s => %s; got %s; sleeping %s seconds before trying again" % (src, dst, le, basedelay,))
-                    time.sleep(basedelay)
-                    basedelay *= 2
-                else:
-                    raise
-        return os.rename(src, dst) # The last try.
-
-    def remove(f, tries=4, basedelay=0.1):
-        """ Here is a superkludge to workaround the fact that occasionally on
-        Windows some other process (e.g. an anti-virus scanner, a local search
-        engine, a backup program, etc.) is looking at your file when you want to
-        delete it, and hence you can't.  The horrible workaround is to sit and
-        spin, trying to delete it, for a short time and then give up.
-
-        With the default values of tries and basedelay this can block for less
-        than a second.
-
-        @param tries: number of tries -- each time after the first we wait twice
-        as long as the previous wait
-        @param basedelay: how long to wait before the second try
-        """
-        try:
-            os.chmod(f, stat.S_IWRITE | stat.S_IEXEC | stat.S_IREAD)
-        except:
-            pass
-        for i in range(tries-1):
-            try:
-                return os.remove(f)
-            except WindowsError, le:
-                if le.winerror == 32:
-                    log.msg("KLUDGE Attempting to remove file %s; got %s; sleeping %s seconds before trying again" % (f, le, basedelay,))
-                    time.sleep(basedelay)
-                    basedelay *= 2
-                else:
-                    raise
-        return os.remove(f) # The last try.
-
-    def rmdir(f, tries=4, basedelay=0.1):
-        """ Here is a superkludge to workaround the fact that occasionally on
-        Windows some other process (e.g. an anti-virus scanner, a local search
-        engine, a backup program, etc.) is looking inside your directory when
-        you want to delete it, and hence you can't.  The horrible workaround is
-        to sit and spin, trying to delete it, for a short time and then give up.
-
-        With the default values of tries and basedelay this can block for less
-        than a second.
-
-        @param tries: number of tries -- each time after the first we wait twice
-        as long as the previous wait
-        @param basedelay: how long to wait before the second try
-        """
-        try:
-            os.chmod(f, stat.S_IWRITE | stat.S_IEXEC | stat.S_IREAD)
-        except:
-            pass
-        for i in range(tries-1):
-            try:
-                return os.rmdir(f)
-            except WindowsError, le:
-                if le.winerror == 32:
-                    log.msg("KLUDGE Attempting to remove file %s; got %s; sleeping %s seconds before trying again" % (f, le, basedelay,))
-                    time.sleep(basedelay)
-                    basedelay *= 2
-                else:
-                    raise
-        return os.rmdir(f) # The last try.
+def rmdir(f, tries=4, basedelay=0.1):
+    return os.rmdir(f)
 
 class _Dir(object):
     """
@@ -318,6 +229,14 @@ def remove_if_possible(f):
     except EnvironmentError:
         pass
 
+def remove_if_present(f):
+    try:
+        remove(f)
+    except EnvironmentError, le:
+        # Ignore "No such file or directory", re-raise any other exception.
+        if (le.args[0] != 2 and le.args[0] != 3) or (le.args[0] != errno.ENOENT):
+            raise
+
 def rmdir_if_possible(f):
     try:
         rmdir(f)
@@ -329,6 +248,7 @@ def open_or_create(fname, binarymode=True):
         f = open(fname, binarymode and "r+b" or "r+")
     except EnvironmentError:
         f = open(fname, binarymode and "w+b" or "w+")
+    return f
 
 def du(basedir):
     size = 0

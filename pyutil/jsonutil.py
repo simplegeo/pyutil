@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # Copyright (c) 2010 Zooko Wilcox-O'Hearn
-#  This file is part of pyutil; see README.txt for licensing terms.
+#  This file is part of pyutil; see README.rst for licensing terms.
 
 # We require simplejson>= 2.1.0 and set its default behavior to
 # use_decimal=True. This retains backwards compatibility with previous
-# versions of jsonutil (although it means jsonutil now requires a very
-# new version of simplejson).
+# versions of jsonutil (although it means jsonutil now requires a recent
+# version of simplejson).
 
 # http://code.google.com/p/simplejson/issues/detail?id=34
 
@@ -125,6 +125,7 @@ __all__ = simplejson.__all__
 # included in simplejson.__all__ they are still attributes of the simplejson
 # package since they are modules within it.
 from simplejson import encoder, decoder, scanner
+encoder, decoder, scanner # http://divmod.org/trac/ticket/1499
 __all__.extend(['encoder', 'decoder', 'scanner'])
 __author__ = simplejson.__author__
 del simplejson
@@ -132,6 +133,7 @@ del simplejson
 from decimal import Decimal
 
 from simplejson.decoder import JSONDecoder, JSONDecodeError
+JSONDecoder, JSONDecodeError # http://divmod.org/trac/ticket/1499
 from simplejson.encoder import JSONEncoder
 def _import_OrderedDict():
     from pyutil.odict import OrderedDict

@@ -2,22 +2,20 @@
 
 import unittest
 
-import math
-
-from pyutil.mathutil import *
+from pyutil import mathutil
 from pyutil.assertutil import _assert
 
 class MathUtilTestCase(unittest.TestCase):
     def _help_test_is_power_of_k(self, k):
         for i in range(2, 40):
-            _assert(is_power_of_k(k**i, k), k, i)
+            _assert(mathutil.is_power_of_k(k**i, k), k, i)
 
     def test_is_power_of_k(self):
         for i in range(2, 5):
             self._help_test_is_power_of_k(i)
 
     def test_log_ceil(self):
-        f = log_ceil
+        f = mathutil.log_ceil
         self.failUnlessEqual(f(1, 2), 0)
         self.failUnlessEqual(f(1, 3), 0)
         self.failUnlessEqual(f(2, 2), 1)
@@ -25,7 +23,7 @@ class MathUtilTestCase(unittest.TestCase):
         self.failUnlessEqual(f(3, 2), 2)
 
     def test_log_floor(self):
-        f = log_floor
+        f = mathutil.log_floor
         self.failUnlessEqual(f(1, 2), 0)
         self.failUnlessEqual(f(1, 3), 0)
         self.failUnlessEqual(f(2, 2), 1)
@@ -33,7 +31,7 @@ class MathUtilTestCase(unittest.TestCase):
         self.failUnlessEqual(f(3, 2), 1)
 
     def test_div_ceil(self):
-        f = div_ceil
+        f = mathutil.div_ceil
         self.failUnlessEqual(f(0, 1), 0)
         self.failUnlessEqual(f(0, 2), 0)
         self.failUnlessEqual(f(0, 3), 0)
@@ -46,7 +44,7 @@ class MathUtilTestCase(unittest.TestCase):
         self.failUnlessEqual(f(7, 3), 3)
 
     def test_next_multiple(self):
-        f = next_multiple
+        f = mathutil.next_multiple
         self.failUnlessEqual(f(5, 1), 5)
         self.failUnlessEqual(f(5, 2), 6)
         self.failUnlessEqual(f(5, 3), 6)
@@ -74,7 +72,7 @@ class MathUtilTestCase(unittest.TestCase):
         self.failUnlessEqual(f(32, 589), 589)
 
     def test_pad_size(self):
-        f = pad_size
+        f = mathutil.pad_size
         self.failUnlessEqual(f(0, 4), 0)
         self.failUnlessEqual(f(1, 4), 3)
         self.failUnlessEqual(f(2, 4), 2)
@@ -82,8 +80,8 @@ class MathUtilTestCase(unittest.TestCase):
         self.failUnlessEqual(f(4, 4), 0)
         self.failUnlessEqual(f(5, 4), 3)
 
-    def test_is_power_of_k(self):
-        f = is_power_of_k
+    def test_is_power_of_k_part_2(self):
+        f = mathutil.is_power_of_k
         for i in range(1, 100):
             if i in (1, 2, 4, 8, 16, 32, 64):
                 self.failUnless(f(i, 2), "but %d *is* a power of 2" % i)
@@ -96,7 +94,7 @@ class MathUtilTestCase(unittest.TestCase):
                 self.failIf(f(i, 3), "but %d is *not* a power of 3" % i)
 
     def test_next_power_of_k(self):
-        f = next_power_of_k
+        f = mathutil.next_power_of_k
         self.failUnlessEqual(f(0,2), 1)
         self.failUnlessEqual(f(1,2), 1)
         self.failUnlessEqual(f(2,2), 2)
@@ -118,7 +116,7 @@ class MathUtilTestCase(unittest.TestCase):
         for i in range(82, 200): self.failUnlessEqual(f(i,3), 243, "%d" % i)
 
     def test_ave(self):
-        f = ave
+        f = mathutil.ave
         self.failUnlessEqual(f([1,2,3]), 2)
         self.failUnlessEqual(f([0,0,0,4]), 1)
         self.failUnlessAlmostEqual(f([0.0, 1.0, 1.0]), .666666666666)
@@ -127,7 +125,7 @@ class MathUtilTestCase(unittest.TestCase):
         self.failUnlessEqual(sorted(a), sorted(b))
 
     def test_permute(self):
-        f = permute
+        f = mathutil.permute
         self.failUnlessEqualContents(f([]), [])
         self.failUnlessEqualContents(f([1]), [[1]])
         self.failUnlessEqualContents(f([1,2]), [[1,2], [2,1]])
@@ -135,9 +133,3 @@ class MathUtilTestCase(unittest.TestCase):
                                      [[1,2,3], [1,3,2],
                                       [2,1,3], [2,3,1],
                                       [3,1,2], [3,2,1]])
-
-def suite():
-    return unittest.makeSuite(MathUtilTestCase, 'test')
-
-if __name__ == "__main__":
-    unittest.main()

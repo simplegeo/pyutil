@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
-import exceptions, random, traceback, unittest
+import unittest
 
 from pyutil import randutil
 
-from pyutil.zlibutil import * 
+from pyutil import zlibutil
 
 class Accumulator:
     def __init__(self):
@@ -31,45 +31,45 @@ MAXMEM=65*2**20
 class ZlibTestCase(unittest.TestCase):
     def _help_test(self, genstring, decomp, strlen):
         s = genstring(strlen)
-        cs = zlib.compress(s)
-        s2 = decomp(cs, maxlen=strlen, maxmem=strlen*2**3 + MINMAXMEM)
+        cs = zlibutil.zlib.compress(s)
+        s2 = decomp(cs, maxlen=strlen, maxmem=strlen*2**3 + zlibutil.MINMAXMEM)
         self.failUnless(s == s2)
-        s2 = decomp(cs, maxlen=strlen, maxmem=strlen*2**6 + MINMAXMEM)
+        s2 = decomp(cs, maxlen=strlen, maxmem=strlen*2**6 + zlibutil.MINMAXMEM)
         self.failUnless(s == s2)
-        self.failUnlessRaises(TooBigError, decomp, cs, maxlen=strlen-1, maxmem=strlen*2**3 + MINMAXMEM)
+        self.failUnlessRaises(zlibutil.TooBigError, decomp, cs, maxlen=strlen-1, maxmem=strlen*2**3 + zlibutil.MINMAXMEM)
 
     def _help_test_inplace_minmaxmem(self, genstring, decomp, strlen):
         s = genstring(strlen)
-        cs = zlib.compress(s)
-        s2 = decomp(cs, maxlen=strlen, maxmem=MINMAXMEM)
+        cs = zlibutil.zlib.compress(s)
+        s2 = decomp(cs, maxlen=strlen, maxmem=zlibutil.MINMAXMEM)
         self.failUnless(s == s2)
-        self.failUnlessRaises(TooBigError, decomp, cs, maxlen=strlen-1, maxmem=MINMAXMEM)
+        self.failUnlessRaises(zlibutil.TooBigError, decomp, cs, maxlen=strlen-1, maxmem=zlibutil.MINMAXMEM)
 
     def _help_test_inplace(self, genstring, decomp, strlen):
         # ### XXX self.failUnlessRaises(UnsafeDecompressError, decomp, zlib.compress(genstring(strlen)), maxlen=strlen, maxmem=strlen-1)
         s = genstring(strlen)
-        cs = zlib.compress(s)
-        s2 = decomp(cs, maxlen=strlen, maxmem=max(strlen*2**3, MINMAXMEM))
+        cs = zlibutil.zlib.compress(s)
+        s2 = decomp(cs, maxlen=strlen, maxmem=max(strlen*2**3, zlibutil.MINMAXMEM))
         self.failUnless(s == s2)
-        s2 = decomp(cs, maxlen=strlen, maxmem=max(strlen*2**6, MINMAXMEM))
+        s2 = decomp(cs, maxlen=strlen, maxmem=max(strlen*2**6, zlibutil.MINMAXMEM))
         self.failUnless(s == s2)
-        s2 = decomp(cs, maxlen=strlen, maxmem=max(strlen-1, MINMAXMEM))
+        s2 = decomp(cs, maxlen=strlen, maxmem=max(strlen-1, zlibutil.MINMAXMEM))
         self.failUnless(s == s2)
-        s2 = decomp(cs, maxlen=strlen, maxmem=max(strlen/2, MINMAXMEM))
+        s2 = decomp(cs, maxlen=strlen, maxmem=max(strlen/2, zlibutil.MINMAXMEM))
         self.failUnless(s == s2)
-        self.failUnlessRaises(TooBigError, decomp, cs, maxlen=strlen-1, maxmem=max(strlen*2**3, MINMAXMEM))
+        self.failUnlessRaises(zlibutil.TooBigError, decomp, cs, maxlen=strlen-1, maxmem=max(strlen*2**3, zlibutil.MINMAXMEM))
 
     def testem(self):
         # for strlen in [2**1, 2**2, 2**10, 2**14, 2**21]: # a *real* test ought to include 2**21, which exercises different cases re: maxmem.  But it takes too long.
         for strlen in [2, 3, 4, 99,]:
             # print "strlen: %s\n" % (strlen,)
-            for decomp in [decompress, make_decomp(decompress_to_fileobj), make_decomp(decompress_to_spool),]:
+            for decomp in [zlibutil.decompress, make_decomp(zlibutil.decompress_to_fileobj), make_decomp(zlibutil.decompress_to_spool),]:
                 # print "decomp: %s\n" % (decomp,)
                 for genstring in [genrandstr, genbombstr,]:
                     # print "genstring: %s\n" % (genstring,)
                     self._help_test(genstring, decomp, strlen)
 
-            for decomp in [make_decomp(decompress_to_spool),]:
+            for decomp in [make_decomp(zlibutil.decompress_to_spool),]:
                 # print "decomp: %s\n" % (decomp,)
                 for genstring in [genrandstr, genbombstr,]:
                     # print "genstring: %s\n" % (genstring,)

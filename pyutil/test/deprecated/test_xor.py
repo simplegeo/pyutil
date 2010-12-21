@@ -2,12 +2,11 @@
 
 #  Copyright (c) 2002-2009 Zooko Wilcox-O'Hearn
 #  portions Copyright (c) 2001 Autonomous Zone Industries
-#  This file is part of pyutil; see README.txt for licensing terms.
+#  This file is part of pyutil; see README.rst for licensing terms.
 #
 import unittest
 
-from pyutil import randutil
-from pyutil.xor.xor import *
+from pyutil.xor import xor
 
 # unit tests
 def _help_test(xf):
@@ -19,14 +18,7 @@ def _help_test(xf):
 
 class Testy(unittest.TestCase):
     def test_em(self):
-        for xorfunc in (py_xor, py_xor_simple, xor,):
+        for xorfunc in (xor.py_xor, xor.py_xor_simple, xor.xor,):
             if callable(xorfunc):
                 # print "testing xorfunc ", xorfunc
                 _help_test(xorfunc)
-
-def suite():
-    return unittest.makeSuite(Testy, 'test')
-
-if __name__ == '__main__':
-    unittest.main()
-

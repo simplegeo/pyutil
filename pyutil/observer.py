@@ -3,6 +3,7 @@
 from twisted.internet import defer
 try:
     from foolscap.eventual import eventually
+    eventually # http://divmod.org/trac/ticket/1499
 except ImportError:
     from twisted.internet import reactor
     def eventually(f, *args, **kwargs):

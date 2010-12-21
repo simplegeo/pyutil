@@ -1,5 +1,5 @@
 #  Copyright (c) 2002-2010 Zooko Wilcox-O'Hearn
-#  This file is part of pyutil; see README.txt for licensing terms.
+#  This file is part of pyutil; see README.rst for licensing terms.
 
 # from the Python Standard Library
 import exceptions, gc, math, operator, os, sys, types
@@ -298,7 +298,7 @@ class Measurer(object):
             self.i += 1
             self.totaliters += self.iterspersample
             self.resiters[self.i] = self.totaliters
-            self.resmemusage[self.i]  = get_mem_usage()
+            self.resmemusage[self.i]  = get_mem_used_res()
             self._invoke()
             return
 
@@ -336,7 +336,7 @@ def measure_mem_leakage(f, numsamples=2**7, iterspersample=2**4, *args, **kwargs
         totaliters = totaliters + iterspersample
         resiters[i] = totaliters
         gc.collect()
-        resmemusage[i] = get_mem_usage()
+        resmemusage[i] = get_mem_used_res()
         # print "totaliters: %s, numobjs: %s" % (resiters[-1], resmemusage[-1],)
 
     avex = float(reduce(operator.__add__, resiters)) / len(resiters)
@@ -409,20 +409,27 @@ def describe_object_with_dict_details(o):
         sl.append(":")
         sl.append(describe_object(v))
     return ''.join(sl)
-            
+
 def describe_dict(o):
     sl = ['<dict']
     l = len(o)
     sl.append(str(l))
     if l:
         sl.append("-")
-        nd = dictutil.NumDict()
- 	# xyz incomplete
         iterator = o.iteritems()
-        k,v =  iterator.next()
-        sl.append(describe_object(k))
-        sl.append(":")
-        sl.append(describe_object(v))
+        firstitem=True
+        try:
+            while True:
+                if firstitem:
+                    firstitem = False
+                else:
+                    sl.append(", ")
+                k,v =  iterator.next()
+                sl.append(describe_object(k))
+                sl.append(": ")
+                sl.append(describe_object(v))
+        except StopIteration:
+            pass
     sl.append('>')
     return ''.join(sl)
 
@@ -440,7 +447,7 @@ def count_all_objects():
             if not id(so) in ids:
                 ids.add(id(so))
     return len(ids)
-  
+
 def visit_all_objects(f):
     """
     Brian and I *think* that this gets all objects.  This is predicated on the
