@@ -8,5 +8,5 @@ include /usr/share/cdbs/1/class/python-distutils.mk
 
 build/python-pyutil::
 	pyflakes pyutil
-	python-coverage run --branch --include=pyutil/* `type -p trial` pyutil
+	python-coverage run --branch --include=pyutil/* setup.py trial
 	python-coverage html -d $(ARTIFACTS)/htmlcov
