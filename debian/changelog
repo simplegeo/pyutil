@@ -1,0 +1,37 @@
+python-pyutil (1.7.9-sg31) lucid; urgency=low
+
+  [ Ian Eure ]
+  * Move setuptools_trial to tests_require.
+  * Remove extra GPL from docs.
+  * Remove egg-info.
+  * Remove darcs stuff, we're using Git here.
+  * Remove clean rule.
+  * Build-Depend on setuptools.
+
+  [ SimpleGeo Nerds ]
+
+ -- SimpleGeo Nerds <nerds@simplegeo.com>  Wed, 16 Jun 2010 20:26:38 +0000
+
+python-pyutil (1.7.9-sg0) unstable; urgency=low
+
+  * New upstream version.
+
+ -- Ian Eure <ian@simplegeo.com>  Wed, 16 Jun 2010 11:30:39 -0700
+
+python-pyutil (1.7.6-3) unstable; urgency=low
+
+  * Fix dependencies.
+
+ -- Ian Eure <ian@simplegeo.com>  Mon, 17 May 2010 10:57:01 -0700
+
+python-pyutil (1.7.6-2) unstable; urgency=low
+
+  * Added Debian source version.
+
+ -- Ian Eure <ian@simplegeo.com>  Mon, 17 May 2010 10:56:56 -0700
+
+python-pyutil (1.7.6-1) unstable; urgency=low
+
+  * Debianized.
+
+ -- Ian Eure <ian@simplegeo.com>  Mon, 17 May 2010 10:27:35 -0700
