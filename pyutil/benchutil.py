@@ -206,4 +206,3 @@ def bench(func, initfunc=None, TOPXP=21, MAXREPS=5, MAXTIME=60.0, profile=False,
 def print_bench_footer(UNITS_PER_SECOND=1):
     print "all results are in time units per N"
     print "time units per second: %s; seconds per time unit: %s" % (UNITS_PER_SECOND, D(1)/UNITS_PER_SECOND)
-
