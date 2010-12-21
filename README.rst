@@ -1,4 +1,4 @@
-pyutil -- a library of useful Python functions and classes
+﻿pyutil -- a library of useful Python functions and classes
 ==========================================================
 
 Many of these utilities (or their ancestors) were developed for the Mojo
@@ -33,6 +33,7 @@ current
 - time_format.py_ - date and time formatting operations
 - version_class.py_ - parse version strings into a Version Number
   object
+- verlib.py_ - utility to compare version strings, by Tarek Ziadé
 
 out of shape
 ------------

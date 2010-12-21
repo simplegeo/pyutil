@@ -1,4 +1,4 @@
-import re, unittest
+import unittest
 
 from pyutil import version_class
 

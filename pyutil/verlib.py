@@ -8,7 +8,6 @@ This was written by Tarek Ziadé.
 Zooko copied it from http://bitbucket.org/tarek/distutilsversion/ on 2010-07-29.
 """
 
-import sys
 import re
 
 class IrrationalVersionError(Exception):

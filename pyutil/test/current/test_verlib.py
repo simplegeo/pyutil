@@ -2,7 +2,6 @@
 """Tests for distutils.version."""
 import unittest
 import doctest
-import os
 
 from pyutil.verlib import NormalizedVersion as V
 from pyutil.verlib import IrrationalVersionError
@@ -30,7 +29,6 @@ class VersionTestCase(unittest.TestCase):
     def test_from_parts(self):
 
         for v, s in self.versions:
-            parts = v.parts
             v2 = V.from_parts(*v.parts)
             self.assertEquals(v, v2)
             self.assertEquals(str(v), str(v2))

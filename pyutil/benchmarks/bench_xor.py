@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 
-#  Copyright (c) 2002-2009 Zooko Wilcox-O'Hearn
+#  Copyright (c) 2002-2010 Zooko Wilcox-O'Hearn
 #  This file is part of pyutil; see README.rst for licensing terms.
 
 import hmac, sys, random
 
-from pyutil.assertutil import _assert, precondition, postcondition
-from pyutil.humanreadable import hr
+from pyutil.assertutil import _assert
 from pyutil.xor import xor
 from pyutil import benchfunc
 from pyutil import randutil

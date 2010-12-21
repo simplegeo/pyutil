@@ -116,8 +116,6 @@ pkg_resources.require("simplejson>=2.1.0")
 # then overwrite it with a copy of the simplejson __init__.py edited
 # to make use_decimal=True the default.
 
-from simplejson import *
-
 import simplejson
 __version__ = simplejson.__version__
 __all__ = simplejson.__all__
