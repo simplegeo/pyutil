@@ -87,15 +87,10 @@ data_fnames=[ 'COPYING.SPL.txt', 'COPYING.GPL', 'COPYING.TGPPL.html', 'README.rs
 doc_loc = "share/doc/" + PKG
 data_files = [(doc_loc, data_fnames)]
 
-try:
-    long_description=open('README.rst').read()
-except IOError:
-    long_description="no long description due to README.rst missing"
-
 setup(name=PKG,
       version=verstr,
       description='a collection of utilities for Python programmers',
-      long_description=long_description,
+      long_description=open('README.rst').read(),
       author='Zooko O\'Whielacronx',
       author_email='zooko@zooko.com',
       url='http://tahoe-lafs.org/trac/' + PKG,
