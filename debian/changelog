@@ -1,3 +1,13 @@
+python-pyutil (1.8.1.56) lucid; urgency=low
+
+  [ Zooko Ofsimplegeo ]
+  * setup: ignore missing README.rst file (I don't know why SimpleGeo's
+    build system is generating tarballs without README.rst, but it is)
+
+  [ SimpleGeo Nerds ]
+
+ -- SimpleGeo Nerds <nerds@simplegeo.com>  Wed, 22 Dec 2010 18:34:53 +0000
+
 python-pyutil (1.8.1.55) lucid; urgency=low
 
   [ Zooko Ofsimplegeo ]
