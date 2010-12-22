@@ -5,7 +5,7 @@
 # -NN "build number" suffix, or else a -rNN "revision number" suffix. Please see
 # pyutil.version_class for a description of what the different fields mean.
 
-verstr = "1.8.1.57"
+verstr = "1.8.1.58"
 try:
     from pyutil.version_class import Version as pyutil_Version
     __version__ = pyutil_Version(verstr)
