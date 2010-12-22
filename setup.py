@@ -67,7 +67,7 @@ if 'trial' in sys.argv[1:]:
 if 'darcsver' in sys.argv[1:]:
     setup_requires.append('darcsver >= 1.0.0')
 
-# setuptools_git is required to produce complete distributions (such
+# setuptools_darcs is required to produce complete distributions (such
 # as with "sdist" or "bdist_egg"), unless there is a
 # pyutil.egg-info/SOURCE.txt file present which contains a complete
 # list of files that should be included.
@@ -76,7 +76,8 @@ if 'darcsver' in sys.argv[1:]:
 # Lucid, so for now you have to manually install it before building
 # sdists or eggs:
 # http://bitbucket.org/tarek/distribute/issue/55/revision-control-plugin-automatically-installed-as-a-build-dependency-is-not-present-when-another-build-dependency-is-being
-setup_requires.append('setuptools_git >= 1.3.4')
+if False:
+    setup_requires.append('setuptools_darcs >= 1.1.0')
 
 
 data_fnames=[ 'COPYING.SPL.txt', 'COPYING.GPL', 'COPYING.TGPPL.html', 'README.rst', 'CREDITS' ]
@@ -86,15 +87,10 @@ data_fnames=[ 'COPYING.SPL.txt', 'COPYING.GPL', 'COPYING.TGPPL.html', 'README.rs
 doc_loc = "share/doc/" + PKG
 data_files = [(doc_loc, data_fnames)]
 
-try:
-    long_description=open('README.rst').read()
-except IOError:
-    long_description="no long description due to README.rst missing"
-
 setup(name=PKG,
       version=verstr,
       description='a collection of utilities for Python programmers',
-      long_description=long_description,
+      long_description=open('README.rst').read(),
       author='Zooko O\'Whielacronx',
       author_email='zooko@zooko.com',
       url='http://tahoe-lafs.org/trac/' + PKG,
