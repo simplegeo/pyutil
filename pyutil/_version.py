@@ -1,11 +1,12 @@
 
-# This is the version of this tree, as created by setup.py darcsver from the Darcs patch
+# This is the version of this tree, as created by setup.py darcsver from the darcs patch
 # information: the main version number is taken from the most recent release
 # tag. If some patches have been added since the last release, this will have a
 # -NN "build number" suffix, or else a -rNN "revision number" suffix. Please see
 # pyutil.version_class for a description of what the different fields mean.
 
-verstr = "1.8.1.55"
+__pkgname__ = "pyutil"
+verstr = "1.8.1-r242"
 try:
     from pyutil.version_class import Version as pyutil_Version
     __version__ = pyutil_Version(verstr)
