@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import codecs, encodings, locale, os, sys, zlib
+import binascii, codecs, encodings, locale, os, sys, zlib
 
 import argparse
 
@@ -74,7 +74,7 @@ def main():
     for codec in listem():
         try:
             u = inb.decode(codec)
-        except (UnicodeDecodeError, IOError, TypeError, IndexError, UnicodeError, ValueError, zlib.error):
+        except (UnicodeDecodeError, IOError, TypeError, IndexError, UnicodeError, ValueError, zlib.error, binascii.Error):
             pass
         else:
             if isinstance(u, unicode):
