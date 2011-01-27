@@ -1,3 +1,15 @@
+python-pyutil (1.8.1.68) lucid; urgency=low
+
+  [ Zooko Ofsimplegeo ]
+  * new version
+  * scripts: try_decoding: catch binascii.Error when trying decoding
+  * new version
+  * new version
+
+  [ SimpleGeo Nerds ]
+
+ -- SimpleGeo Nerds <nerds@simplegeo.com>  Thu, 27 Jan 2011 05:22:36 +0000
+
 python-pyutil (1.8.1.66) lucid; urgency=low
 
   * UNRELEASED

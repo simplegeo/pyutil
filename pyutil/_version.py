@@ -6,7 +6,7 @@
 # pyutil.version_class for a description of what the different fields mean.
 
 __pkgname__ = "pyutil"
-verstr = "1.8.1.66"
+verstr = "1.8.1.68"
 try:
     from pyutil.version_class import Version as pyutil_Version
     __version__ = pyutil_Version(verstr)
