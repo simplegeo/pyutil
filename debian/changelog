@@ -1,3 +1,27 @@
+python-pyutil (1.8.1.66) lucid; urgency=low
+
+  * UNRELEASED
+
+ -- SimpleGeo Nerds <nerds@simplegeo.com>  Tue, 04 Jan 2011 19:12:39 +0000
+
+python-pyutil (1.8.1.65) lucid; urgency=low
+
+  * UNRELEASED
+
+ -- SimpleGeo Nerds <nerds@simplegeo.com>  Thu, 23 Dec 2010 17:31:40 +0000
+
+python-pyutil (1.8.1.64) lucid; urgency=low
+
+  [ Zooko Ofsimplegeo ]
+  * experiment: see if setup-requiring setuptools_git fixes this
+  * Okay instead of having setuptools automatically discover files
+    because they are under git revision control, let's instead give it a
+    list of files in pyutil.egg-info/SOURCES.txt...
+
+  [ SimpleGeo Nerds ]
+
+ -- SimpleGeo Nerds <nerds@simplegeo.com>  Wed, 22 Dec 2010 19:14:12 +0000
+
 python-pyutil (1.8.1.58) lucid; urgency=low
 
   [ Zooko Ofsimplegeo ]

@@ -1,6 +1,3 @@
-
-.binaries
-.boringfiles
 .gitignore
 COPYING.GPL
 COPYING.SPL.txt
@@ -59,7 +56,6 @@ pyutil.egg-info/dependency_links.txt
 pyutil.egg-info/entry_points.txt
 pyutil.egg-info/not-zip-safe
 pyutil.egg-info/requires.txt
-pyutil.egg-info/stdeb.cfg
 pyutil.egg-info/top_level.txt
 pyutil/benchmarks/bench_json.py
 pyutil/benchmarks/bench_xor.py
